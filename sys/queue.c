@@ -32,9 +32,11 @@ int enqueue(int item, int tail)
 int dequeue(int item)
 {
 	struct	qent	*mptr;		/* pointer to q entry for item	*/
-
 	mptr = &q[item];
-	q[mptr->qprev].qnext = mptr->qnext;
-	q[mptr->qnext].qprev = mptr->qprev;
+	if(mptr->qnext != mptr->qprev){
+		q[mptr->qprev].qnext = mptr->qnext;
+		q[mptr->qnext].qprev = mptr->qprev;
+		mptr->qnext = mptr->qprev;
+	}
 	return(item);
 }

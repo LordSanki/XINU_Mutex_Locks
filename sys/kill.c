@@ -8,7 +8,7 @@
 #include <io.h>
 #include <q.h>
 #include <stdio.h>
-
+#include "lock.h"
 /*------------------------------------------------------------------------
  * kill  --  kill a process and remove it from the system
  *------------------------------------------------------------------------
@@ -18,11 +18,15 @@ SYSCALL kill(int pid)
 	STATWORD ps;    
 	struct	pentry	*pptr;		/* points to proc. table for pid*/
 	int	dev;
-
+	int i;
 	disable(ps);
 	if (isbadpid(pid) || (pptr= &proctab[pid])->pstate==PRFREE) {
 		restore(ps);
 		return(SYSERR);
+	}
+	for (i = 0; i < NLOCKS; i++){
+		if (locktab[i].procs[currpid].lstate == LOCKED)
+			releaseall(1, CREATELDESC(i, locktab[i].procs[currpid].lage));
 	}
 	if (--numproc == 0)
 		xdone();
