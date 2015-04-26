@@ -1,6 +1,6 @@
 #include "lock.h"
 
-locktab_t locktab[NLOCKS];
+lock_t locktab[NLOCKS];
 int nlocks;
 
 SYSCALL linit()
@@ -16,4 +16,5 @@ SYSCALL linit()
 		lock->tail = 1 + lock->head;
 	}
 	nlocks = 0;
+  return OK;
 }

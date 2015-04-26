@@ -3,7 +3,7 @@
 #include <conf.h>
 #include <kernel.h>
 #include <q.h>
-
+#define ENABLE_LOCKS
 /*------------------------------------------------------------------------
  * enqueue  --	insert an item at the tail of a list
  *------------------------------------------------------------------------
@@ -33,10 +33,15 @@ int dequeue(int item)
 {
 	struct	qent	*mptr;		/* pointer to q entry for item	*/
 	mptr = &q[item];
-	if(mptr->qnext != mptr->qprev){
+#ifdef ENABLE_LOCKS
+	if(mptr->qnext != mptr->qprev)
+#endif
+  {
 		q[mptr->qprev].qnext = mptr->qnext;
 		q[mptr->qnext].qprev = mptr->qprev;
+#ifdef ENABLE_LOCKS
 		mptr->qnext = mptr->qprev;
+#endif
 	}
 	return(item);
 }

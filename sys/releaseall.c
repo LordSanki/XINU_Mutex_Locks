@@ -43,7 +43,7 @@ SYSCALL releaseall(int nlocks, ...)
 		next = q[lock->tail].qprev;
 		while (next != lock->head){
 			if (lock->procs[next].ltype == READ){
-				grant_lock(next, lock, TRUE);
+				grant_lock(lock, next, TRUE);
 			}
 			else{
 				break;
@@ -54,7 +54,7 @@ SYSCALL releaseall(int nlocks, ...)
 		if (lock->state == UNLOCKED){
 			if (nonempty(lock->head)){
 				int pid = getlast(lock->tail);
-				grant_lock(pid, lock, TRUE);
+				grant_lock(lock, pid, TRUE);
 				//assert(lock->procs[pid].ltype == WRITE);
 			}
 		}

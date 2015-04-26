@@ -13,11 +13,13 @@
 #include <q.h>
 #include <io.h>
 #include <stdio.h>
-
+#include <lock.h>
 /*#define DETAIL */
 #define HOLESIZE	(600)	
 #define	HOLESTART	(640 * 1024)
 #define	HOLEEND		((1024 + HOLESIZE) * 1024)  
+
+#define ENABLE_LOCKS
 
 extern	int	main();			/* address of user's main prog	*/
 extern	int	start();
@@ -112,7 +114,7 @@ int nulluser()				/* babysit CPU when no one home */
 	open(CONSOLE, console_dev, 0);
 
 	/* create a process to execute the user's main program */
-        resume(create((int *)main,INITSTK,INITPRIO,INITNAME,INITARGS));
+  resume(create((int *)main,INITSTK,INITPRIO,INITNAME,INITARGS));
 
 	while (TRUE)
 		/* empty */;
@@ -178,7 +180,10 @@ LOCAL int sysinit()
 	}
 
 	rdytail = 1 + (rdyhead=newqueue());/* initialize ready list */
+
+#ifdef ENABLE_LOCKS
 	linit();
+#endif
 
 #ifdef	MEMMARK
 	_mkinit();			/* initialize memory marking */
