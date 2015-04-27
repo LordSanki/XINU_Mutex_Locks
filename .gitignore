@@ -1,5 +1,6 @@
 # Object files
-*.o
+compile/*.o
+lib/libxc/*.o
 *.ko
 *.obj
 *.elf
