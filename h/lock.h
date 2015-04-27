@@ -21,6 +21,7 @@ typedef struct {
 	unsigned char ltype;
 	unsigned char lstate;
 	unsigned int lage;
+	unsigned long ltime;
 }procdesc_t;
 
 #define LID2LDESC(ID) ((locktab[ID].age << 6)|ID)
