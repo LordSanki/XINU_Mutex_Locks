@@ -27,7 +27,7 @@
 #define	PRSUSP		'\006'		/* process is suspended		*/
 #define	PRWAIT		'\007'		/* process is on semaphore queue*/
 #define	PRTRECV		'\010'		/* process is timing a receive	*/
-
+#define PRLOCK    '\011'    /* process is waiting for a lock */
 /* miscellaneous process definitions */
 
 #define	PNMLEN		16		/* length of process "name"	*/

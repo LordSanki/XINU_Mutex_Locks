@@ -27,10 +27,11 @@ SYSCALL kill(int pid)
 	}
 
 #ifdef ENABLE_LOCKS
-	for (i = 0; i < NLOCKS; i++){
-		if (locktab[i].procs[currpid].lstate == LOCKED)
-			releaseall(1, CREATELDESC(i, locktab[i].procs[currpid].lage));
-	}
+  for (i = 0; i < NLOCKS; i++){
+    if (locktab[i].procs[pid].lstate == LOCKED)
+      release_lock(CREATELDESC(i, locktab[i].procs[pid].lage), pid);
+    locktab[i].procs[pid].lstate = UNLOCKED;
+  }
 #endif
 
   if (--numproc == 0)
@@ -56,6 +57,7 @@ SYSCALL kill(int pid)
 
 	case PRWAIT:	semaph[pptr->psem].semcnt++;
 
+  case PRLOCK:
 	case PRREADY:	dequeue(pid);
 			pptr->pstate = PRFREE;
 			break;

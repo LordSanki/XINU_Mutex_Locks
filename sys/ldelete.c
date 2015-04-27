@@ -18,7 +18,9 @@ SYSCALL ldelete(int ldesc)
 	lock->type = DELETED;
 	while (nonempty(lock->head)){
 		pid = getfirst(lock->head);
+    lock->procs[pid].lstate = UNLOCKED;
 		ready(pid, RESCHNO);
 	}
+  restore(ps);
 	return OK;
 }

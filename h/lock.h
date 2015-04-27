@@ -53,5 +53,6 @@ extern SYSCALL releaseall(int nlocks, ...);
 extern SYSCALL lock(int ldesc, int type, int prio);
 extern SYSCALL linit();
 extern void grant_lock(lock_t * lock, int pid, int ready_proc);
+extern int release_lock(int ldesc, int pid);
 
 #endif //__LOCK_H__

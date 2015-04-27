@@ -75,7 +75,7 @@ LOCAL int start_wait(int pid, int prio, int age, lock_t *lock, STATWORD ps)
 {
 	dequeue(pid);
 	insert(pid, lock->head, prio);
-	proctab[pid].pstate = PRWAIT;
+	proctab[pid].pstate = PRLOCK;
 	lock->procs[currpid].lstate = WAITING;
 	restore(ps);
 	/* W8ing starts*/
